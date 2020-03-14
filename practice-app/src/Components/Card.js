@@ -1,20 +1,67 @@
 import React, { Component } from 'react';
+import people from "./data"
+import Person from "./Person"
 
-export default function Card(props) {
+export default class Card extends Component {
+    constructor(props) {
+        super(props); 
+        this.state = {
+            personIndex: 0
+        }
+    }
 
-     return (
-        <div className="card">
-            <section className="userInfo">
-                <h1 className="number">{props.data[0].id}/25</h1>
-                <h1 className="user">{props.data[0].name.first} {props.data[0].name.last}</h1>
-                <h2 className="from"><b>From:</b>{props.data[0].country}</h2>
-                <h2 className="title"><b>Title:</b>{props.data[0].title}</h2>
-                <h2 className="employer"><b>Employer:</b>{props.data[0].employer}</h2>
-            </section>
+    
 
-            <section className="favs">
-                <h2 className="movies">Favorite Movies:</h2>
-            </section>
-        </div>
-        )
+    previousIndex = () => {
+        if(this.state.personIndex === 0) {
+            let newIndex = people.length - 1
+            this.setState({
+                personIndex: newIndex
+            })
+        } else {
+            this.setState({
+                personIndex: this.state.personIndex - 1
+            })
+        }
+        
+    }
+
+    nextIndex = () => {
+        if (this.state.personIndex === people.length -1) {
+            this.setState({
+                personIndex: 0
+            })
+        } else {
+            this.setState({ 
+                personIndex: this.state.personIndex + 1
+            })
+        }
+        
+    }
+
+    render (){
+        const {personIndex} = this.state
+        console.log("personIndex", personIndex)
+        const mappedData = people.map(person => {
+            return <Person person={person}/>
+         
+        })
+        console.log(mappedData)
+        return (
+            <div className="card">
+                {mappedData[personIndex]}
+                <button onClick={this.previousIndex}>Previous</button>
+                <button onClick={this.nextIndex}>Next</button>
+                {/* <section className="userInfo">
+                    <h1 className="number">{}/25</h1>
+                    <h1 className="user">{} {}</h1>
+                </section>
+    
+                <section className="favs">
+                </section> */}
+            </div>
+            )
+    }
+
+    
 }
